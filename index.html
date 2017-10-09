@@ -37,14 +37,13 @@
 <!-- The scoring area -->
   <div class="row">
     <div class="col-lg-12">
-      <h3 class="panel-title">Your Scores vs. Your Enemy's Score</h3>
+      <h3 class="panel-title">Your Scores vs. the Villian's Score</h3>
     </div>
           
     <div class="panel-body">
       <div class="text-center">
-          <h5 class = "userFighter">Your score here</h5>
-          <h5 class = "userEnemy">Enemy's score here</h5>
-          <h5 class = "results">Outcome of game here</h5>
+          <h5 class = "scoreHero">Your score here</h5>
+          <h5 class = "scoreVillian">Enemy's score here</h5>
       </div>
         <div class="text-center">
           <button class="btn btn-default btn-lg fight-button"><span class="glyphicon  glyphicon-fire"></span> Fight</button>
@@ -58,7 +57,7 @@
         <!-- Controls (Superpower Grow/Shrink)-->
         <div class="panel panel-default">
           <div class="panel-heading the-fighter">
-            <h3 class="panel-title">Your Fighter</h3>
+            <h3 class="panel-title">Your Hero</h3>
           </div>
           <div class="panel-body">
             <div class="text-center">
@@ -73,9 +72,9 @@
 
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Your Opponent</h3>
+            <h3 class="panel-title">The Villian</h3>
           </div>
-          <div class="panel-body">
+          <div class="panel-body the-villian">
             <div class="text-center">
               <div class="sel-opp">              
               </div>
@@ -187,6 +186,7 @@ var indexVillian;
 var arrayCharacters = ["fighter-1", "fighter-2", "fighter-3", "fighter-4"];
 var arrayCharactersName = ["The Wizard", "Mr. Death", "The Warlock", "The Buddha"];
 var arrayHealthPoints = [120, 140, 160, 170];
+var arrayAttackPower = [1, 2, 3, 4];
 
   $(".fighter").on("click", function() {
    
@@ -207,23 +207,12 @@ var arrayHealthPoints = [120, 140, 160, 170];
       // imgContent = ("<div><img src=' " + selFighter + " ' style= '" + selStyle + "'></div>");
       imgContent = ("<div><p> " + charName + "</p><img src=' " + selFighter + "' id='borders-good'><p> Power Level: " + charValue + "</p> </div>");
 
-      console.log(imgContent);
-
-      console.log(parent);
-      console.log(indexHero);
-      $(".colorme").css("background", "red");
+      $(".colorme").css("background", "#A80C0C");
 
       $(".sel-fighter").append(imgContent);
       $("." + parent).hide();
       isFighterChosen++;
 
-
-
-
-      //Remove chosen character from array of classe
-
-      // arrayCharacters.pop(parent);
-      // console.log(arrayCharacters);
     }
 
     else if (isFighterChosen === 2) {
@@ -234,8 +223,6 @@ var arrayHealthPoints = [120, 140, 160, 170];
       parent = $(this).closest(".fighter").attr("class").match(/\b(fighter-\d+)\b/)[1]; 
 
       indexVillian = arrayCharacters.indexOf(parent);
-      console.log(parent);
-      console.log(indexVillian);
 
       charName = arrayCharactersName[indexVillian];
       charValue = arrayHealthPoints[indexVillian];
@@ -245,10 +232,8 @@ var arrayHealthPoints = [120, 140, 160, 170];
 
       $(".sel-opp").append(imgContent);
       $("." + parent).hide();
-      //Remove chosen character from array of classes
-
-      // arrayCharacters.pop(parent);
-      // console.log(arrayCharacters);
+      
+      $(".the-villian").css("background", "#A80C0C");
 
       isFighterChosen++;
     }
@@ -263,7 +248,44 @@ var arrayHealthPoints = [120, 140, 160, 170];
 
     villianHP = arrayHealthPoints[indexVillian];
     villianAttackPower = arrayAttackPower[indexVillian];
+
+    console.log(heroHP);
+    console.log(heroAttackPower);
+    console.log(villianHP);
+    console.log(villianAttackPower);
+
+  if (isFighterChosen === 3) {
+      if ((heroHP > 0) && (villianHP > 0)) {
+        
+        heroAttackPower = (heroAttackPower * 6);
+        villianHP = (villianHP - heroAttackPower);
+
+        heroHP = (villianAttackPower - heroHP);
+        alert("The Hero HP is " + heroHP + " and the villianHP is " + villianHP);
+        
+        console.log(villianHP);
+        console.log(heroHP);
+
+        //Insert code to be transferred to HTML 
+      }
+      else if ((heroHP <= 0) && (villianHP > 0)) {
+        alert("You lost!");
+        //Restart game - put images back in their places and reset variables
+      }
+      else {
+
+        //Theortically this should be where the villianHP is below zero so 
+        // gets to choose a new Villian
+        alert("Insert new logic");
+      }    
+    }
+    else {
+      alert("Oh I don't think so! Chose your heros & villians first!");
+    }
   })
+
+
+
 
 
 
