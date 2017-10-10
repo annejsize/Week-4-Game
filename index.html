@@ -14,8 +14,6 @@
   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
   <link href="https://fonts.googleapis.com/css?family=Lato|Rubik+Mono+One" rel="stylesheet">
 
-
-
 </head>
 <body>
 
@@ -30,7 +28,8 @@
     
     <div class="text-center">
     <p>Ready to wage a battle against an opponent of your choosing?</p>
-    <p>First, select your fighter. Then from the list of remaining characters, select the fight you'd like to fight against.</p>
+    <p>First, select your fighter.</p>
+    <p> Then from the list of remaining characters, select the fight you'd like to fight against.</p>
 
     </div>
   </div>
@@ -41,9 +40,7 @@
     </div>
           
     <div class="panel-body">
-      <div class="text-center">
-          <h5 class = "scoreHero">Your score here</h5>
-          <h5 class = "scoreVillian">Enemy's score here</h5>
+      <div class="text-center scoreHero">
       </div>
         <div class="text-center">
           <button class="btn btn-default btn-lg fight-button"><span class="glyphicon  glyphicon-fire"></span> Fight</button>
@@ -124,58 +121,15 @@
     </div>
   </div>
 </div>
-
-<!--   <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Remaining Characters</h3>
-    </div>
-    <div class="panel-body">
-      <div class = "row">
-        <div class = "col-lg-3">
-          <div class="text-center">
-            <img src="assets/images/wizard.png" alt="" class="img" style="height: 200px">
-            <p> Power Level Placeholder </p>
-          </div>
-        </div>
-              
-        <div class = "col-lg-3">
-          <div class="text-center">
-            <img src="assets/images/death.png" alt="" class="img" style="height: 200px">
-            <p> Power Level Placeholder </p>
-          </div>
-        </div>
-      
-        <div class = "col-lg-3">
-          <div class="text-center">
-            <img src="assets/images/warlock.png" alt="" class="img" style="height: 200px">
-            <p> Power Level Placeholder </p>
-          </div>
-        </div>
-      
-        <div class = "col-lg-3">
-          <div class="text-center">
-            <img src="assets/images/buddha.png" alt="" class="img" style="height: 200px">
-            <p> Power Level Placeholder </p>
-          </div>
-        </div>
-    </div>
-  </div> -->
 </div>
 
 <script>
 $(document).ready(function(){
 // Set the variables - make them global at this time
-var healthPoints = 0;
-var attackPower = 0;
-var countAttackPower = 0;
 
-
-
-// First user selects their fighter - the good guy - image is moved to 'Your Character' area
-
-    //Create a variable where when the user clicks on the image, the img source - this -  is fed into it.
-    //Variable is then used to move the image to the right location.
 var isFighterChosen = 1;
+var countRounds = 1;
+
 var selFighter;
 var selStyle;
 var imgContent;
@@ -186,7 +140,15 @@ var indexVillian;
 var arrayCharacters = ["fighter-1", "fighter-2", "fighter-3", "fighter-4"];
 var arrayCharactersName = ["The Wizard", "Mr. Death", "The Warlock", "The Buddha"];
 var arrayHealthPoints = [120, 140, 160, 170];
-var arrayAttackPower = [1, 2, 3, 4];
+var arrayAttackPower = [7, 6, 9, 4];
+
+var heroName;
+var villName;
+
+var heroAttackPower;
+var villianHP;
+var heroHP;
+
 
   $(".fighter").on("click", function() {
    
@@ -199,23 +161,23 @@ var arrayAttackPower = [1, 2, 3, 4];
       // Get the index of the array
 
       indexHero = arrayCharacters.indexOf(parent);
-      console.log(indexHero);
 
-      charName = arrayCharactersName[indexHero];
+      heroName = arrayCharactersName[indexHero];
       charValue = arrayHealthPoints[indexHero];
 
-      // imgContent = ("<div><img src=' " + selFighter + " ' style= '" + selStyle + "'></div>");
-      imgContent = ("<div><p> " + charName + "</p><img src=' " + selFighter + "' id='borders-good'><p> Power Level: " + charValue + "</p> </div>");
+      imgContent = ("<div class='hero'><p> " + heroName + "</p><img src=' " + selFighter + "' id='borders-good'><p> Power Level: " + charValue + "</p> </div>");
+      
+      $(".sel-fighter").append(imgContent);
 
       $(".colorme").css("background", "#A80C0C");
 
-      $(".sel-fighter").append(imgContent);
       $("." + parent).hide();
-      isFighterChosen++;
+      $(".announcement").hide();
 
+      isFighterChosen++;
     }
 
-    else if (isFighterChosen === 2) {
+    else if ((isFighterChosen === 2) && (countRounds<5)) {
       selFighter = $('img', $(this)).attr('src');
       // selStyle  =  $('img', $(this)).attr('style');
       selDiv = $('img', $(this)).attr('id'); 
@@ -224,11 +186,10 @@ var arrayAttackPower = [1, 2, 3, 4];
 
       indexVillian = arrayCharacters.indexOf(parent);
 
-      charName = arrayCharactersName[indexVillian];
+      villName = arrayCharactersName[indexVillian];
       charValue = arrayHealthPoints[indexVillian];
       
-      // imgContent = ("<div><img src=' " + selFighter + " ' style= '" + selStyle + "'></div>");
-      imgContent = ("<div><p> " + charName + "</p><img src=' " + selFighter + "' id='borders-bad'><p> Power Level: " + charValue + "</p> </div>");
+      imgContent = ("<div class='villian'><p> " + villName + "</p><img src=' " + selFighter + "' id='borders-bad'><p> Power Level: " + charValue + "</p> </div>");
 
       $(".sel-opp").append(imgContent);
       $("." + parent).hide();
@@ -236,18 +197,22 @@ var arrayAttackPower = [1, 2, 3, 4];
       $(".the-villian").css("background", "#A80C0C");
 
       isFighterChosen++;
+      countRounds++;
+
+      heroHP = arrayHealthPoints[indexHero];
+      heroAttackPower = arrayAttackPower[indexHero];
+
+      villianHP = arrayHealthPoints[indexVillian];
+      villianAttackPower = arrayAttackPower[indexVillian];
+
+      $(".instruct").hide();
     }
     else {
       alert("Yo. Start the fight already!");
     }
   })
-
+//The figggghtttt is ON LIKE DONKEY KONG!
   $(".fight-button").on("click", function(){
-    heroHP = arrayHealthPoints[indexHero];
-    heroAttackPower = arrayAttackPower[indexHero];
-
-    villianHP = arrayHealthPoints[indexVillian];
-    villianAttackPower = arrayAttackPower[indexVillian];
 
     console.log(heroHP);
     console.log(heroAttackPower);
@@ -255,46 +220,42 @@ var arrayAttackPower = [1, 2, 3, 4];
     console.log(villianAttackPower);
 
   if (isFighterChosen === 3) {
-      if ((heroHP > 0) && (villianHP > 0)) {
-        
-        heroAttackPower = (heroAttackPower * 6);
-        villianHP = (villianHP - heroAttackPower);
+      if ((heroHP > 0) && (villianHP > 0)) {     
+  
+          heroAttackPower = (heroAttackPower + heroAttackPower);
+          villianHP -= heroAttackPower;
+          heroHP -= villianAttackPower;
 
-        heroHP = (villianAttackPower - heroHP);
-        alert("The Hero HP is " + heroHP + " and the villianHP is " + villianHP);
-        
-        console.log(villianHP);
-        console.log(heroHP);
+          var scoreContent1 = ("<div><h5 class='scoreInfo'> Your hero, " + heroName + ", has attacked, " + villName + " for " + heroAttackPower + " points!</h5></div>");
 
-        //Insert code to be transferred to HTML 
+          var scoreContent2 = ("<div><h5 class='scoreInfo'> The villian, " + villName + ", has attacked, " + heroName + " for " + villianAttackPower + " points!</h5></div>");
+      
+          $(".scoreHero").append(scoreContent1);
+          $(".scoreVillian").append(scoreContent2);
+        
       }
       else if ((heroHP <= 0) && (villianHP > 0)) {
         alert("You lost!");
         //Restart game - put images back in their places and reset variables
       }
-      else {
-
-        //Theortically this should be where the villianHP is below zero so 
-        // gets to choose a new Villian
-        alert("Insert new logic");
-      }    
+      else if ((heroHP > 0) && (villianHP <= 0) && (countRounds<5)) {
+          $(".villian").hide();
+          
+          var pickNewPlayer = $("<h3>");
+          pickNewPlayer.addClass("announcement");
+          pickNewPlayer.text("You've won! Pick a new opponent from the red space below. Let's see how you do this time!");
+          $(".instruct").append(pickNewPlayer);
+          
+          (isFighterChosen = 2);
+          console.log(countRounds);
+      }   
     }
-    else {
-      alert("Oh I don't think so! Chose your heros & villians first!");
+    //THis is here to make sure people aren't hitting the fight button before selecting their players
+  else {
+    alert("Oh I don't think so! Chose your heros & villians first!");
     }
   })
-
-
-
-
-
-
-
-
-
 })
-
-
 
  </script>
 
