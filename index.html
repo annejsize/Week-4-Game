@@ -15,7 +15,7 @@
   <link href="https://fonts.googleapis.com/css?family=Lato|Rubik+Mono+One" rel="stylesheet">
 
 </head>
-<body>
+<body background="assets/images/background-02.png">
 
    <!-- Overall Bootstrap Grid -->
 <div class="container">
@@ -26,21 +26,20 @@
 <!--     <h4 class="text-center"></h4> -->
     <hr>
     
-    <div class="text-center">
+    <div class="text-center place-winner">
     <p>Ready to wage a battle against an opponent of your choosing?</p>
-    <p>First, select your fighter.</p>
-    <p> Then from the list of remaining characters, select the fight you'd like to fight against.</p>
-
     </div>
   </div>
 <!-- The scoring area -->
   <div class="row">
     <div class="col-lg-12">
-      <h3 class="panel-title">Your Scores vs. the Villian's Score</h3>
+      <h3 class="panel-title">Your Score vs. the Villian's Score</h3>
     </div>
           
     <div class="panel-body">
       <div class="text-center scoreHero">
+      </div>
+      <div class="text-center scoreVillian">
       </div>
         <div class="text-center">
           <button class="btn btn-default btn-lg fight-button"><span class="glyphicon  glyphicon-fire"></span> Fight</button>
@@ -48,10 +47,7 @@
     </div>
     <div class="row">
 
-      <!-- Left Panel -->
       <div class="col-lg-6">
-
-        <!-- Controls (Superpower Grow/Shrink)-->
         <div class="panel panel-default">
           <div class="panel-heading the-fighter">
             <h3 class="panel-title">Your Hero</h3>
@@ -59,6 +55,7 @@
           <div class="panel-body">
             <div class="text-center">
               <div class="sel-fighter">
+                <h2 id="hero-caption">First, select your fighter.</h2>
               </div>
             </div>
           </div>
@@ -73,7 +70,7 @@
           </div>
           <div class="panel-body the-villian">
             <div class="text-center">
-              <div class="sel-opp">              
+              <div class="sel-opp">            
               </div>
             </div>
           </div>
@@ -149,6 +146,9 @@ var heroAttackPower;
 var villianHP;
 var heroHP;
 
+var vilValue;
+var heroValue;
+
 
   $(".fighter").on("click", function() {
    
@@ -163,13 +163,17 @@ var heroHP;
       indexHero = arrayCharacters.indexOf(parent);
 
       heroName = arrayCharactersName[indexHero];
-      charValue = arrayHealthPoints[indexHero];
+      heroValue = arrayHealthPoints[indexHero];
 
-      imgContent = ("<div class='hero'><p> " + heroName + "</p><img src=' " + selFighter + "' id='borders-good'><p> Power Level: " + charValue + "</p> </div>");
+       vilInstructions =("<h2 id='vil-caption'>Then go get your villian!</h2>");  
+
+      imgHero = ("<div class='hero'><p> " + heroName + "</p><img src=' " + selFighter + "' id='borders-good'><p> Power Level: " + heroValue + "</p> </div>");
       
-      $(".sel-fighter").append(imgContent);
-
+      $(".sel-fighter").html(imgHero);
+      $(".sel-opp").html(vilInstructions);
       $(".colorme").css("background", "#A80C0C");
+
+      $("#hero-caption").hide();
 
       $("." + parent).hide();
       $(".announcement").hide();
@@ -179,6 +183,7 @@ var heroHP;
 
     else if ((isFighterChosen === 2) && (countRounds<5)) {
       selFighter = $('img', $(this)).attr('src');
+      $("#vil-caption").hide();
       // selStyle  =  $('img', $(this)).attr('style');
       selDiv = $('img', $(this)).attr('id'); 
 
@@ -187,11 +192,11 @@ var heroHP;
       indexVillian = arrayCharacters.indexOf(parent);
 
       villName = arrayCharactersName[indexVillian];
-      charValue = arrayHealthPoints[indexVillian];
+      vilValue = arrayHealthPoints[indexVillian];
       
-      imgContent = ("<div class='villian'><p> " + villName + "</p><img src=' " + selFighter + "' id='borders-bad'><p> Power Level: " + charValue + "</p> </div>");
+      imgVillian = ("<div class='villian'><p> " + villName + "</p><img src=' " + selFighter + "' id='borders-bad'><p> Power Level: " + vilValue + "</p> </div>");
 
-      $(".sel-opp").append(imgContent);
+      $(".sel-opp").append(imgVillian);
       $("." + parent).hide();
       
       $(".the-villian").css("background", "#A80C0C");
@@ -201,11 +206,12 @@ var heroHP;
 
       heroHP = arrayHealthPoints[indexHero];
       heroAttackPower = arrayAttackPower[indexHero];
+      basePower = arrayAttackPower[indexHero];
 
       villianHP = arrayHealthPoints[indexVillian];
       villianAttackPower = arrayAttackPower[indexVillian];
 
-      $(".instruct").hide();
+      // $(".instruct").hide();
     }
     else {
       alert("Yo. Start the fight already!");
@@ -214,24 +220,19 @@ var heroHP;
 //The figggghtttt is ON LIKE DONKEY KONG!
   $(".fight-button").on("click", function(){
 
-    console.log(heroHP);
-    console.log(heroAttackPower);
-    console.log(villianHP);
-    console.log(villianAttackPower);
-
   if (isFighterChosen === 3) {
       if ((heroHP > 0) && (villianHP > 0)) {     
   
-          heroAttackPower = (heroAttackPower + heroAttackPower);
+          heroAttackPower += basePower;
           villianHP -= heroAttackPower;
           heroHP -= villianAttackPower;
 
           var scoreContent1 = ("<div><h5 class='scoreInfo'> Your hero, " + heroName + ", has attacked, " + villName + " for " + heroAttackPower + " points!</h5></div>");
 
-          var scoreContent2 = ("<div><h5 class='scoreInfo'> The villian, " + villName + ", has attacked, " + heroName + " for " + villianAttackPower + " points!</h5></div>");
-      
-          $(".scoreHero").append(scoreContent1);
-          $(".scoreVillian").append(scoreContent2);
+          var scoreContent2 = ("<div><h5 class='scoreInfo'> The villian, " + villName + ", has attacked, " + heroName + " for " + villianAttackPower + " points!</h5></div>");         
+
+          $(".scoreHero").html(scoreContent1);
+          $(".scoreVillian").html(scoreContent2);
         
       }
       else if ((heroHP <= 0) && (villianHP > 0)) {
@@ -241,14 +242,18 @@ var heroHP;
       else if ((heroHP > 0) && (villianHP <= 0) && (countRounds<5)) {
           $(".villian").hide();
           
-          var pickNewPlayer = $("<h3>");
-          pickNewPlayer.addClass("announcement");
-          pickNewPlayer.text("You've won! Pick a new opponent from the red space below. Let's see how you do this time!");
-          $(".instruct").append(pickNewPlayer);
+          var pickNewPlayer = $("<h2 class='announcement'> You've won! Pick a new opponent from the red area below.</h2>");
+          
+          $(".place-winner").html(pickNewPlayer);
           
           (isFighterChosen = 2);
           console.log(countRounds);
       }   
+      else if (countRounds===4) {
+          var pickNewPlayer = $("<h2 class='announcement'> CONGRATULATIONS, WINNER! </h2>");
+          
+          $(".place-winner").html(pickNewPlayer);
+      }
     }
     //THis is here to make sure people aren't hitting the fight button before selecting their players
   else {
