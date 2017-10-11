@@ -156,6 +156,7 @@ var heroValue;
         $(".sel-fighter").empty();
         $(".sel-opp").empty();
         $(".ineedcolortoo").css("background", "#ffffff");
+        $(".sel-fighter").append("<h2 id='hero-caption'>First, select your fighter.</h2>");
 
 
           $(".place-winner").html(pickNewPlayer);
